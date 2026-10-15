@@ -51,7 +51,7 @@ function HomePage() {
             </div>
             <div>
               <p className="intro-copy">
-                I build contemporary brand systems, immersive digital stories, and polished web experiences for culture-led projects. This portfolio is a sample of concepts and prototypes shaped for screens, spaces, and motion.
+                Нажимай кнопку ниже, чтобы посмотреть мои проекты. Да, может список и коротковат... Но ведь не все же сразу, так?
               </p>
               <div className="hero__actions">
                 <a className="button button--primary" href="#works">
@@ -69,12 +69,12 @@ function HomePage() {
           <div className="container">
             <div className="section-header">
               <div>
-                <p className="eyebrow">Selected work</p>
-                <h2>Projects</h2>
+                <p className="eyebrow">Мои работы</p>
+                <h2>Проекты</h2>
               </div>
               <div className="toolbar">
                 <label className="search-field" htmlFor="project-search">
-                  <span className="sr-only">Search projects</span>
+                  <span className="sr-only">Поиск</span>
                   <input
                     id="project-search"
                     type="search"
@@ -104,8 +104,8 @@ function HomePage() {
                 filteredProjects.map((project) => <ProjectCard key={project.id} project={project} />)
               ) : (
                 <div className="empty-state">
-                  <h3>No projects match your filters.</h3>
-                  <p>Try another keyword or choose a different category.</p>
+                  <h3>Такого проекта пока нет.</h3>
+                  <p>Попробуй написать иначе.</p>
                 </div>
               )}
             </div>
@@ -116,10 +116,10 @@ function HomePage() {
           <div className="container about-section__inner">
             <div>
               <p className="eyebrow">About</p>
-              <h2>Creative direction with a product mindset.</h2>
+              <h2>Я учусь, но уже делаю серьезные проекты. Подписывайся на телеграмм.</h2>
             </div>
             <p>
-              I approach design as a layered story: narrative, motion, interaction, and systems working together. My practice balances expressive visuals with functional clarity so each experience feels both intentional and easy to use.
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum.
             </p>
           </div>
         </section>
