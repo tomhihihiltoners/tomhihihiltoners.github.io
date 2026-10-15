@@ -48,27 +48,6 @@ export const projects = [
     vkUrl: 'https://vk.ru/wall-228703273_816',
     downloadUrl: 'https://t.me/+jAjso927D9ZkYWZi',
   },
-    {
-    id: 'dog',
-    title: 'бездомная собака',
-    year: '2026',
-    category: 'ника помоги',
-    cover:
-      'https://file.garden/atDNoqj9Xr_pDZ7l/pes.jpg',
-    description:
-      'Ника, ему очень грусинр.',
-    media: {
-      videos: [
-      ],
-      images: [
-      ],
-    },
-    team: [
-      { name: 'Дедова Николь', role: 'будущая хозяйка' }
-    ],
-    vkUrl: 'https://vk.ru/wall-228703273_816',
-    downloadUrl: 'https://t.me/+jAjso927D9ZkYWZi',
-  },
 ];
 
 export const categories = ['All', ...new Set(projects.map((project) => project.category))];
