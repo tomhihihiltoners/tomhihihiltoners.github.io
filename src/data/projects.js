@@ -25,13 +25,13 @@ export const projects = [
   },
   {
     id: 'podcastpier',
-    title: 'Подкаст с Пьером Кристианом Броше',
+    title: 'Подкаст с Пьером Броше',
     year: '2026',
     category: 'Подкаст',
     cover:
-      'https://file.garden/atDNoqj9Xr_pDZ7l/pier_01.jpg',
+      'https://file.garden/atDNoqj9Xr_pDZ7l/pier.jpg',
     description:
-      'Мы решили начать с нашей жемчужины. В новом выпуске — разговор об искусстве и креативности с человеком, влюбленным в Россию, — искусствоведом, книжным издателем и телеведущим канала «Россия Культура» Пьером-Кристианом Броше.',
+      'В новом выпуске — разговор об искусстве и креативности с человеком, влюбленным в Россию, — искусствоведом, книжным издателем и телеведущим канала «Россия Культура» Пьером-Кристианом Броше.',
     media: {
       videos: [
         '<iframe src="https://drive.google.com/file/d/1eQoUbNNFxiOCxaa_FZkFYicAqh7rS7Uh/preview" width="640" height="480"></iframe>',
@@ -45,7 +45,7 @@ export const projects = [
     team: [
       { name: 'Дмитрий Давыдов', role: 'Режиссёр, режиссёр монтажа' }
     ],
-    vkUrl: 'https://vk.com/feed',
+    vkUrl: 'https://vk.ru/wall-228703273_816',
     downloadUrl: 'https://t.me/+jAjso927D9ZkYWZi',
   },
 ];

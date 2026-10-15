@@ -3,16 +3,16 @@
   --font-heading: 'Rounded';
   --font-accent: 'Astra_Serif';
 
-  --color-background: #05070a;
-  --color-surface: rgba(11, 15, 20, 0.82);
-  --color-surface-strong: #0a0d13;
-  --color-card: #111a22;
-  --color-text: #edf6ff;
-  --color-text-secondary: #8ea9bb;
-  --color-text-muted: #c8d4dd;
-  --color-accent: #7fffd4;
-  --color-accent-secondary: #4ed8ff;
-  --color-accent-warm: #ff4db8;
+  --color-background: #000111;
+  --color-surface: #0b0f1ed1;
+  --color-surface-strong: #000B37;
+  --color-card: #111A2A;
+  --color-text: #D9E2F0;
+  --color-text-secondary: #8EA9BB;
+  --color-text-muted: #65758B;
+  --color-accent: #00D9FF;
+  --color-accent-secondary: #B026FF;
+
   --color-accent-danger: #ff5c5c;
   --color-border: rgba(127, 255, 212, 0.22);
   --color-border-strong: rgba(78, 216, 255, 0.7);
