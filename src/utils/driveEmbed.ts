@@ -3,7 +3,13 @@ export function getDrivePreviewUrl(url: string): { embedUrl: string | null; file
     return { embedUrl: null, fileId: null, error: "Ссылка не указана" };
   }
 
-  const cleanUrl = url.trim();
+  let cleanUrl = url.trim();
+  const iframeSrcMatch = cleanUrl.match(
+    /<iframe\b[^>]*\bsrc\s*=\s*(?:"([^"]+)"|'([^']+)'|([^\s>]+))[^>]*>/i
+  );
+  if (iframeSrcMatch) {
+    cleanUrl = iframeSrcMatch[1] || iframeSrcMatch[2] || iframeSrcMatch[3];
+  }
 
   if (cleanUrl.includes('drive.google.com/file/d/') && cleanUrl.endsWith('/preview')) {
     const match = cleanUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);

@@ -12,19 +12,19 @@ export interface EvidenceFrame {
 
 export const SITE_CONFIG = {
   author: "ДМИТРИЙ ДАВЫДОВ",
-  title: "THE MAGIC OF CHRISTMAS",
+  title: " ",
 
   // 1. Оригинальная реклама 1995 года
   originalCommercial: {
-    tag: "ORIGINAL COCA-COLA CHRISTMAS COMMERCIAL (1995)",
+    tag: "Настоящая реклама Coca-Cola (1995)",
     heading: "Легендарная реклама Coca-Cola, 1995",
-    videoSrc: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/view",
+    videoSrc: '<iframe src="https://drive.google.com/file/d/1pdQIPGe_DcWeBwz31jfkc4zvL9Fs7DAY/preview" width="640" height="480"></iframe>',
   },
 
   // 2. AI-реклама 2025 года
   aiCommercial: {
-    tag: "AI-GENERATED CHRISTMAS COMMERCIAL (2025)",
-    heading: "THIS VIDEO ISN’T REAL",
+    tag: "Видео, созданное с помощью ИИ. (2025)",
+    heading: "Реклама Coca-Cola, сгенерированная с помощью ИИ (2025)",
     videoSrc: "https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I0JKLMNOPQRSTUVW/view",
   },
 
@@ -55,7 +55,7 @@ export const SITE_CONFIG = {
 
   // 4. Вердикт
   verdict: {
-    heading: "WOULD I BUY IT?",
+    heading: "Купил бы я это?",
     text: "Повлияла ли AI-реклама на моё желание покупать Coca-Cola? Нет. Оригинал 1995 года создавал ощущение праздника и тепла, а сгенерированный ролик оставляет ощущение холодного видеоряда, в котором при внимательном взгляде распадается физика объектов."
   }
 };
