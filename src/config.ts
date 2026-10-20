@@ -25,7 +25,7 @@ export const SITE_CONFIG = {
   aiCommercial: {
     tag: "Видео, созданное с помощью ИИ. (2025)",
     heading: "Реклама Coca-Cola, сгенерированная с помощью ИИ (2025)",
-    videoSrc: "https://drive.google.com/file/d/1A2B3C4D5E6F7G8H9I0JKLMNOPQRSTUVW/view",
+    videoSrc: '<iframe src="https://drive.google.com/file/d/1WYJ4KzWW7u_DghoZsjndPQURuB1MbjLD/preview" width="640" height="480"></iframe>',
   },
 
   // 3. Визуальные доказательства (чистые скриншоты без лишних маркеров)
@@ -35,20 +35,26 @@ export const SITE_CONFIG = {
       {
         id: "frame-01",
         tag: "FRAME 01",
-        imageSrc: "https://images.unsplash.com/photo-1513297887119-d46091b24bfa?auto=format&fit=crop&w=1400&q=80",
+        imageSrc: "https://file.garden/atDNoqj9Xr_pDZ7l/mpv-shot0002.jpg",
         description: "Кадр 1"
       },
       {
         id: "frame-02",
         tag: "FRAME 02",
-        imageSrc: "https://images.unsplash.com/photo-1543258103-a62bdc069871?auto=format&fit=crop&w=1400&q=80",
+        imageSrc: "https://file.garden/atDNoqj9Xr_pDZ7l/mpv-shot0004.jpg",
         description: "Кадр 2"
       },
       {
         id: "frame-03",
         tag: "FRAME 03",
-        imageSrc: "https://images.unsplash.com/photo-1512389142860-9c449e58a543?auto=format&fit=crop&w=1400&q=80",
+        imageSrc: "https://file.garden/atDNoqj9Xr_pDZ7l/mpv-shot0005.jpg",
         description: "Кадр 3"
+      },
+            {
+        id: "frame-04",
+        tag: "FRAME 04",
+        imageSrc: "https://file.garden/atDNoqj9Xr_pDZ7l/mpv-shot0006.jpg",
+        description: "Кадр 4"
       }
     ] as EvidenceFrame[]
   },
@@ -56,6 +62,6 @@ export const SITE_CONFIG = {
   // 4. Вердикт
   verdict: {
     heading: "Купил бы я это?",
-    text: "Повлияла ли AI-реклама на моё желание покупать Coca-Cola? Нет. Оригинал 1995 года создавал ощущение праздника и тепла, а сгенерированный ролик оставляет ощущение холодного видеоряда, в котором при внимательном взгляде распадается физика объектов."
+    text: "Да. Повлияла ли реклама на мое мнение о продукте? Нет. Однако такая реклама у любого другого бренда может спровоцировать крупный скандал в медиаполе.",
   }
 };
