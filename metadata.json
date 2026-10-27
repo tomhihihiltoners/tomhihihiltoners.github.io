@@ -1,0 +1,8 @@
+{
+  "name": "Accidental Immortality — A Media Longread",
+  "description": "An interactive visual longread exploring how Rick Astley's 'Never Gonna Give You Up' outlived its original 1987 context to become the internet's most iconic cultural phenomenon.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
