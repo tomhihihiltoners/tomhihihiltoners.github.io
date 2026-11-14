@@ -26,6 +26,13 @@ const DAILY_FIELDS = [
   'sunset',
 ].join(',');
 
+const HOURLY_FIELDS = [
+  'temperature_2m',
+  'weather_code',
+  'precipitation_probability',
+  'is_day',
+].join(',');
+
 const CONDITIONS = new Map([
   [0, { label: 'Ясно', kind: 'clear' }],
   [1, { label: 'Преимущественно ясно', kind: 'clear' }],
@@ -82,6 +89,7 @@ export async function fetchWeather({ latitude, longitude, apiKey, signal }) {
     longitude: String(longitude),
     current: CURRENT_FIELDS,
     daily: DAILY_FIELDS,
+    hourly: HOURLY_FIELDS,
     timezone: 'auto',
     forecast_days: '7',
     wind_speed_unit: 'ms',
@@ -106,6 +114,7 @@ export async function fetchWeather({ latitude, longitude, apiKey, signal }) {
   const payload = await response.json();
   const current = payload.current ?? {};
   const daily = payload.daily ?? {};
+  const hourly = payload.hourly ?? {};
   const condition = describeWeatherCode(current.weather_code);
 
   return {
@@ -127,6 +136,7 @@ export async function fetchWeather({ latitude, longitude, apiKey, signal }) {
       const dayCondition = describeWeatherCode(daily.weather_code?.[index]);
       return {
         date: new Date(`${time}T12:00:00`),
+        isoDate: time,
         max: round(daily.temperature_2m_max?.[index]),
         min: round(daily.temperature_2m_min?.[index]),
         precipitationProbability: round(daily.precipitation_probability_max?.[index]),
@@ -134,6 +144,19 @@ export async function fetchWeather({ latitude, longitude, apiKey, signal }) {
         sunset: daily.sunset?.[index] ?? null,
         label: dayCondition.label,
         kind: dayCondition.kind,
+      };
+    }),
+    hourly: (hourly.time ?? []).map((time, index) => {
+      const hourCondition = describeWeatherCode(hourly.weather_code?.[index]);
+      return {
+        time,
+        isoDate: time.slice(0, 10),
+        hour: Number.parseInt(time.slice(11, 13), 10),
+        temperature: round(hourly.temperature_2m?.[index]),
+        precipitationProbability: round(hourly.precipitation_probability?.[index]),
+        isDay: Number(hourly.is_day?.[index]) !== 0,
+        label: hourCondition.label,
+        kind: hourCondition.kind,
       };
     }),
   };

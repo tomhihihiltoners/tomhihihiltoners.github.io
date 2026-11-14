@@ -3,8 +3,12 @@ import WeatherGlyph from './WeatherGlyph';
 import { openMeteoConfig, weatherLocation } from '../../lib/dashboardConfig';
 import { fetchWeather } from '../../lib/openMeteo';
 
-const weekdayFormatter = new Intl.DateTimeFormat('ru-RU', { weekday: 'short' });
 const dayFormatter = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short' });
+const longDayFormatter = new Intl.DateTimeFormat('ru-RU', {
+  weekday: 'long',
+  day: 'numeric',
+  month: 'long',
+});
 const timeFormatter = new Intl.DateTimeFormat('ru-RU', {
   hour: '2-digit',
   minute: '2-digit',
@@ -13,8 +17,12 @@ const timeFormatter = new Intl.DateTimeFormat('ru-RU', {
 
 const REFRESH_MS = 10 * 60 * 1000;
 
+/** Local hours shown in the "today by hour" strip. */
+const TODAY_HOURS = [8, 10, 12, 14, 16, 18, 20, 22];
+
 const formatTemp = (value) => (value === null ? '—' : `${Math.round(value)}°`);
 const formatValue = (value, unit) => (value === null ? '—' : `${value}${unit}`);
+const formatPercent = (value) => (value === null ? '—' : `${value}%`);
 
 /** Open-Meteo returns local ISO strings such as "2026-11-14T08:24". */
 const clockTime = (iso) => (typeof iso === 'string' && iso.length >= 16 ? iso.slice(11, 16) : null);
@@ -56,8 +64,23 @@ export default function WeatherPanel() {
 
   const current = weather?.current;
   const today = weather?.daily?.[0];
+  const tomorrow = weather?.daily?.[1] ?? null;
+
+  const todayKey = weather?.hourly?.[0]?.isoDate ?? null;
+  const todayHours = weather
+    ? weather.hourly.filter((entry) => entry.isoDate === todayKey && TODAY_HOURS.includes(entry.hour))
+    : [];
+  const nowHour = weather ? weather.observedAt.getHours() : -1;
+  /** The listed slot that is currently in effect (or the most recent one). */
+  const activeHour = todayHours.reduce(
+    (active, entry) => (entry.hour <= nowHour ? entry.hour : active),
+    null,
+  );
+
   const sunrise = clockTime(today?.sunrise);
   const sunset = clockTime(today?.sunset);
+  const tomorrowSunrise = clockTime(tomorrow?.sunrise);
+  const tomorrowSunset = clockTime(tomorrow?.sunset);
 
   return (
     <section className="panel panel--weather" aria-label="Погода в Челябинске">
@@ -115,31 +138,59 @@ export default function WeatherPanel() {
               </div>
             </div>
 
-            <div className="forecast">
-              <p className="cal-section-label">Прогноз на 7 дней</p>
-              <div className="forecast__row">
-                {weather.daily.map((day, index) => (
-                  <div className="forecast__day" key={day.date.toISOString()}>
-                    <span className="forecast__weekday">
-                      {index === 0 ? 'сегодня' : weekdayFormatter.format(day.date)}
-                    </span>
-                    <WeatherGlyph kind={day.kind} size={30} />
-                    <span className="forecast__temp">
-                      {formatTemp(day.max)} <span>{formatTemp(day.min)}</span>
-                    </span>
-                    <span className="forecast__precip">
-                      {day.precipitationProbability === null
-                        ? '—'
-                        : `${day.precipitationProbability}%`}
+            <div className="hourly">
+              <p className="cal-section-label">Сегодня по часам</p>
+              <div className="hourly__row">
+                {todayHours.map((entry) => (
+                  <div
+                    className={
+                      entry.hour === activeHour ? 'hourly__cell hourly__cell--now' : 'hourly__cell'
+                    }
+                    key={entry.time}
+                  >
+                    <span className="hourly__time">{entry.time.slice(11, 16)}</span>
+                    <WeatherGlyph kind={entry.kind} isDay={entry.isDay} size={26} />
+                    <span className="hourly__temp">{formatTemp(entry.temperature)}</span>
+                    <span className="hourly__precip">
+                      {formatPercent(entry.precipitationProbability)}
                     </span>
                   </div>
                 ))}
               </div>
             </div>
 
+            {tomorrow ? (
+              <div className="tomorrow">
+                <p className="cal-section-label">Завтра</p>
+                <div className="tomorrow__card">
+                  <div className="tomorrow__main">
+                    <WeatherGlyph kind={tomorrow.kind} size={38} />
+                    <div className="tomorrow__text">
+                      <p className="tomorrow__weekday">
+                        {longDayFormatter.format(tomorrow.date)}
+                      </p>
+                      <p className="tomorrow__condition">{tomorrow.label}</p>
+                    </div>
+                    <p className="tomorrow__temps">
+                      <span className="tomorrow__max">{formatTemp(tomorrow.max)}</span>
+                      <span className="tomorrow__min">{formatTemp(tomorrow.min)}</span>
+                    </p>
+                  </div>
+                  <p className="tomorrow__extra">
+                    <span>осадки {formatPercent(tomorrow.precipitationProbability)}</span>
+                    {tomorrowSunrise ? (
+                      <span>
+                        восход {tomorrowSunrise} · закат {tomorrowSunset}
+                      </span>
+                    ) : null}
+                  </p>
+                </div>
+              </div>
+            ) : null}
+
             <p className="weather__footer">
               <span>
-                {sunrise ? `восход ${sunrise} · закат ${sunset}` : 'солнце: нет данных'}
+                {sunrise ? `сегодня: восход ${sunrise} · закат ${sunset}` : 'солнце: нет данных'}
               </span>
               <span>
                 обновлено {timeFormatter.format(weather.observedAt)} ·{' '}
