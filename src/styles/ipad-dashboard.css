@@ -1,0 +1,604 @@
+/* /pageforipad — lightweight iPad dashboard built on the site's design tokens. */
+
+.ipad-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ipad-bar {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  flex: 0 0 auto;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(5, 8, 12, 0.82);
+  backdrop-filter: blur(16px);
+}
+
+.ipad-bar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 56px;
+  width: min(1600px, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(12px, 2.4vw, 28px);
+}
+
+.ipad-bar__label {
+  color: var(--color-text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.ipad-main {
+  flex: 1 1 auto;
+  width: min(1600px, 100%);
+  margin: 0 auto;
+  padding: clamp(12px, 1.8vw, 22px) clamp(12px, 2.4vw, 28px) clamp(16px, 2vw, 26px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1.2fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  grid-template-areas: 'clock calendar weather';
+  gap: clamp(12px, 1.4vw, 20px);
+  min-height: 0;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(13, 18, 24, 0.92), rgba(7, 9, 13, 0.96));
+  box-shadow: inset 0 1px 0 rgba(127, 255, 212, 0.06), 0 18px 42px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+}
+
+.panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.02) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+  mix-blend-mode: screen;
+  opacity: 0.14;
+}
+
+.panel--clock {
+  grid-area: clock;
+}
+.panel--calendar {
+  grid-area: calendar;
+}
+.panel--weather {
+  grid-area: weather;
+}
+
+.panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 12px clamp(13px, 1.3vw, 18px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panel__title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.panel__badge {
+  color: var(--color-text-muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+}
+
+.panel__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: clamp(13px, 1.3vw, 18px);
+}
+
+/* Clock ------------------------------------------------------------------ */
+
+.panel--clock .panel__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.clock__time {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 7.4vw, 6.6rem);
+  line-height: 0.86;
+  letter-spacing: -0.07em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  text-shadow: 0 0 22px rgba(78, 216, 255, 0.22), 0 0 64px rgba(127, 255, 212, 0.12);
+}
+
+.clock__seconds {
+  font-size: 0.26em;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  text-shadow: 0 0 14px rgba(127, 255, 212, 0.55);
+}
+
+.clock__date {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--color-text-muted);
+  font-size: clamp(0.92rem, 1.35vw, 1.12rem);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+.clock__weekday {
+  text-transform: capitalize;
+  color: var(--color-text);
+}
+
+/* Calendar --------------------------------------------------------------- */
+
+.cal-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.cal-nav__button {
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: rgba(10, 13, 19, 0.75);
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  transition: color 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.cal-nav__button:hover,
+.cal-nav__button:focus-visible {
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+  background: linear-gradient(135deg, rgba(127, 255, 212, 0.16), rgba(78, 216, 255, 0.14));
+}
+
+.cal-month {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 1.5vw, 1.32rem);
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+  color: var(--color-text);
+}
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.cal-dow {
+  padding-bottom: 4px;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.cal-cell {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.015);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(0.74rem, 1vw, 0.92rem);
+  font-variant-numeric: tabular-nums;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.cal-cell:hover {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.cal-cell--muted {
+  opacity: 0.3;
+}
+
+.cal-cell--today {
+  border-color: rgba(127, 255, 212, 0.55);
+  color: var(--color-text);
+}
+
+.cal-cell--selected {
+  background: linear-gradient(135deg, rgba(127, 255, 212, 0.26), rgba(78, 216, 255, 0.2));
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+  box-shadow: 0 0 16px rgba(127, 255, 212, 0.16);
+}
+
+.cal-cell--events::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-accent-secondary);
+  transform: translateX(-50%);
+  box-shadow: 0 0 6px rgba(78, 216, 255, 0.85);
+}
+
+.cal-cell--selected::after {
+  background: var(--color-text);
+}
+
+.cal-divider {
+  height: 1px;
+  margin: 16px 0 12px;
+  background: linear-gradient(90deg, var(--color-border), transparent);
+}
+
+.cal-section-label {
+  margin: 0 0 8px;
+  font-family: var(--font-heading);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.cal-status {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border: 1px dashed var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.cal-status--error {
+  border-color: rgba(255, 92, 92, 0.5);
+  color: var(--color-accent-danger);
+}
+
+.cal-empty {
+  padding: 10px 0;
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+}
+
+.cal-connect {
+  width: 100%;
+  margin-top: 10px;
+  min-height: 46px;
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cal-connect:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.event-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.event-item {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid var(--color-border);
+  background: rgba(8, 12, 18, 0.72);
+}
+
+.event-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--color-accent), var(--color-accent-secondary));
+}
+
+.event-item__time {
+  flex: 0 0 auto;
+  min-width: 3.2rem;
+  color: var(--color-accent);
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.event-item__title {
+  color: var(--color-text);
+  font-size: 0.86rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.event-item__meta {
+  margin-top: 3px;
+  color: var(--color-text-secondary);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Weather ---------------------------------------------------------------- */
+
+.weather__now {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.3vw, 16px);
+}
+
+.weather__glyph {
+  flex: 0 0 auto;
+  color: var(--color-accent-secondary);
+  filter: drop-shadow(0 0 12px rgba(78, 216, 255, 0.35));
+}
+
+.weather__temp {
+  font-family: var(--font-heading);
+  font-size: clamp(2.6rem, 5.6vw, 4.4rem);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 20px rgba(78, 216, 255, 0.18);
+}
+
+.weather__condition {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+  font-size: clamp(0.84rem, 1.1vw, 0.96rem);
+  line-height: 1.3;
+}
+
+.weather__place {
+  margin-top: 10px;
+  color: var(--color-text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.weather__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 9px 11px;
+  border: 1px solid var(--color-border);
+  background: rgba(8, 12, 18, 0.72);
+}
+
+.metric__label {
+  color: var(--color-text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.metric__value {
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.forecast {
+  margin-top: 18px;
+}
+
+.forecast__row {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.forecast__day {
+  flex: 0 0 auto;
+  width: 72px;
+  padding: 9px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  scroll-snap-align: start;
+  border: 1px solid var(--color-border);
+  background: rgba(8, 12, 18, 0.72);
+  text-align: center;
+}
+
+.forecast__weekday {
+  font-family: var(--font-heading);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.forecast__temp {
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+.forecast__temp span {
+  color: var(--color-text-secondary);
+}
+
+.forecast__precip {
+  font-size: 0.6rem;
+  color: var(--color-accent-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.weather__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  color: var(--color-text-secondary);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.weather__footer a {
+  color: var(--color-accent);
+  border-bottom: 1px solid rgba(127, 255, 212, 0.35);
+  white-space: nowrap;
+}
+
+/* Focus ------------------------------------------------------------------ */
+
+.cal-cell:focus-visible,
+.cal-nav__button:focus-visible,
+.cal-connect:focus-visible,
+.weather__footer a:focus-visible {
+  outline: 2px solid rgba(127, 255, 212, 0.85);
+  outline-offset: 2px;
+}
+
+/* Responsive ------------------------------------------------------------- */
+
+@media (orientation: landscape) and (min-width: 861px) {
+  .ipad-shell {
+    height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1180px) and (min-width: 861px) {
+  .ipad-main {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-rows: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-areas:
+      'clock calendar'
+      'weather calendar';
+  }
+}
+
+@media (orientation: portrait), (max-width: 860px) {
+  .ipad-main {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      'clock'
+      'calendar'
+      'weather';
+    gap: 14px;
+  }
+
+  .panel--clock {
+    min-height: 210px;
+  }
+
+  .panel__body {
+    overflow: visible;
+  }
+
+  .panel--clock .panel__body {
+    padding: 24px 18px;
+  }
+
+  .clock__time {
+    font-size: clamp(3.4rem, 15vw, 5.4rem);
+  }
+
+  .cal-cell {
+    min-height: 40px;
+  }
+
+  .weather__temp {
+    font-size: clamp(3rem, 12vw, 4.2rem);
+  }
+
+  .forecast__day {
+    width: 78px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cal-cell,
+  .cal-nav__button {
+    transition: none;
+  }
+}

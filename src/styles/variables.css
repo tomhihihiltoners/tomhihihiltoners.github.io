@@ -1,0 +1,21 @@
+:root {
+  --font-body: 'Astra_Serif';
+  --font-heading: 'Rounded';
+  --font-accent: 'Astra_Serif';
+
+  --color-background: #05070a;
+  --color-surface: rgba(11, 15, 20, 0.82);
+  --color-surface-strong: #0a0d13;
+  --color-card: #111a22;
+  --color-text: #edf6ff;
+  --color-text-secondary: #8ea9bb;
+  --color-text-muted: #c8d4dd;
+  --color-accent: #7fffd4;
+  --color-accent-secondary: #4ed8ff;
+  --color-accent-warm: #ff4db8;
+  --color-accent-danger: #ff5c5c;
+  --color-border: rgba(127, 255, 212, 0.22);
+  --color-border-strong: rgba(78, 216, 255, 0.7);
+  --color-hover: rgba(127, 255, 212, 0.12);
+  --color-shadow: 0 0 30px rgba(78, 216, 255, 0.25), 0 22px 60px rgba(0, 0, 0, 0.52);
+}
