@@ -9,7 +9,7 @@ import {
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 const MONTHS_AHEAD = 2;
 
-const monthFormatter = new Intl.DateTimeFormat('ru-RU', { month: 'long', year: 'numeric' });
+const monthFormatter = new Intl.DateTimeFormat('ru-RU', { month: 'long' });
 const selectedDayFormatter = new Intl.DateTimeFormat('ru-RU', {
   weekday: 'long',
   day: 'numeric',
@@ -164,7 +164,9 @@ export default function CalendarPanel() {
       </header>
 
       <div className="panel__body">
-        <p className="cal-month">{monthFormatter.format(viewDate)}</p>
+        <p className="cal-month">
+          {monthFormatter.format(viewDate)} {viewDate.getFullYear()}
+        </p>
 
         <div className="cal-grid" role="grid" aria-label="Дни месяца">
           {WEEKDAYS.map((label) => (

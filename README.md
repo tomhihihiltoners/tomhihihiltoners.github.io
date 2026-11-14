@@ -39,7 +39,10 @@ Open-Meteo is a public, CORS-enabled API called directly from the page.
 1. Enable **Google Calendar API** in the [Google Cloud console](https://console.cloud.google.com/apis/library/calendar-json.googleapis.com).
 2. Create an **OAuth client ID** of type *Web application* under *APIs & Services → Credentials*.
 3. Add the authorised JavaScript origins that serve the page:
+   `https://dmitriicreativit.space` (the live custom domain — required),
    `https://tomhihihiltoners.github.io` and `http://localhost:5173`.
+   Under *Authorised domains*, add `dmitriicreativit.space` and
+   `tomhihihiltoners.github.io`.
 4. Put the client ID in `.env.local` as `VITE_GOOGLE_CLIENT_ID=...`, or rely on the
    fallback already in `src/lib/dashboardConfig.js`.
 5. On the **OAuth consent screen**, add the Google account you sign in with as a test user
@@ -59,6 +62,8 @@ npm run dev   # http://localhost:5173/pageforipad
 `.github/workflows/deploy.yml` builds the project and publishes `dist/` with GitHub Pages.
 The build also mirrors `index.html` to `pageforipad/index.html` and to `404.html`, so the
 deep link `/pageforipad` resolves on GitHub Pages, which serves static files only.
+`public/CNAME` pins the custom domain `dmitriicreativit.space`, which is where the site
+is publicly served (`https://tomhihihiltoners.github.io` redirects to it).
 
 ### Geolocation
 

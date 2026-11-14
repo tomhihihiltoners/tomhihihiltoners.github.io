@@ -12,6 +12,12 @@ const readNumber = (value, fallback) => {
  * inside every browser-side flow and they only grant access after the account
  * owner approves the consent screen. The client *secret* is never used here.
  * Override with VITE_GOOGLE_CLIENT_ID.
+ *
+ * The client must list these authorised JavaScript origins (authorised domains
+ * also need the origin's domain registered in the Google Cloud console):
+ *   https://dmitriicreativit.space
+ *   https://tomhihihiltoners.github.io
+ *   http://localhost:5173
  */
 const DEFAULT_GOOGLE_CLIENT_ID =
   '567116258958-brq252t2fq0uo58mui9h8qtorghnn7r7.apps.googleusercontent.com';
