@@ -1,7 +1,7 @@
 :root {
-  --font-body: 'Astra_Serif';
-  --font-heading: 'Rounded';
-  --font-accent: 'Astra_Serif';
+  --font-body: 'Raleway', 'Astra_Serif', Georgia, serif;
+  --font-heading: 'Raleway', 'Rounded', sans-serif;
+  --font-accent: 'Raleway', 'Astra_Serif', serif;
 
   --color-background: #05070a;
   --color-surface: rgba(11, 15, 20, 0.82);

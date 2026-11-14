@@ -7,6 +7,14 @@
 }
 
 @font-face {
+  font-family: 'Raleway';
+  src: url('/fonts/Raleway.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Rounded';
   src: url('/fonts/Rounded.ttf') format('opentype');
   font-weight: 400;
