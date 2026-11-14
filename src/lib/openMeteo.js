@@ -3,6 +3,7 @@
  * from the browser: https://open-meteo.com/en/docs
  */
 const FORECAST_ENDPOINT = 'https://api.open-meteo.com/v1/forecast';
+const CUSTOMER_FORECAST_ENDPOINT = 'https://customer-api.open-meteo.com/v1/forecast';
 
 const CURRENT_FIELDS = [
   'temperature_2m',
@@ -75,7 +76,7 @@ export function compassLabel(degrees) {
   return COMPASS[Math.round(((parsed % 360) + 360) % 360 / 45) % 8];
 }
 
-export async function fetchWeather({ latitude, longitude, signal }) {
+export async function fetchWeather({ latitude, longitude, apiKey, signal }) {
   const params = new URLSearchParams({
     latitude: String(latitude),
     longitude: String(longitude),
@@ -86,12 +87,19 @@ export async function fetchWeather({ latitude, longitude, signal }) {
     wind_speed_unit: 'ms',
   });
 
-  const response = await fetch(`${FORECAST_ENDPOINT}?${params.toString()}`, {
+  // A commercial key switches to the customer host; the free host rejects it.
+  if (apiKey) params.set('apikey', apiKey);
+
+  const endpoint = apiKey ? CUSTOMER_FORECAST_ENDPOINT : FORECAST_ENDPOINT;
+  const response = await fetch(`${endpoint}?${params.toString()}`, {
     signal,
     headers: { Accept: 'application/json' },
   });
 
   if (!response.ok) {
+    if (response.status === 400 && apiKey) {
+      throw new Error('Open-Meteo отклонил API-ключ. Проверьте VITE_OPEN_METEO_APIKEY.');
+    }
     throw new Error(`Open-Meteo вернул ${response.status}`);
   }
 

@@ -28,7 +28,16 @@ export const googleCalendarConfig = {
 };
 
 export const defaultLocation = {
-  label: readString(env.VITE_WEATHER_CITY) || 'Москва',
-  latitude: readNumber(env.VITE_WEATHER_LAT, 55.7558),
-  longitude: readNumber(env.VITE_WEATHER_LON, 37.6173),
+  label: readString(env.VITE_WEATHER_CITY) || 'Пермь',
+  latitude: readNumber(env.VITE_WEATHER_LAT, 58.0105),
+  longitude: readNumber(env.VITE_WEATHER_LON, 56.2502),
+};
+
+/**
+ * Open-Meteo is keyless by default. A commercial (paid) key is supported through
+ * the customer host, but it ships to the browser when set here, so it is kept out
+ * of source control: supply it as VITE_OPEN_METEO_APIKEY in a git-ignored .env file.
+ */
+export const openMeteoConfig = {
+  apiKey: readString(env.VITE_OPEN_METEO_APIKEY),
 };

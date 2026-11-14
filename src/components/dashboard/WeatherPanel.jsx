@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import WeatherGlyph from './WeatherGlyph';
-import { defaultLocation } from '../../lib/dashboardConfig';
+import { defaultLocation, openMeteoConfig } from '../../lib/dashboardConfig';
 import { fetchWeather } from '../../lib/openMeteo';
 
 const weekdayFormatter = new Intl.DateTimeFormat('ru-RU', { weekday: 'short' });
@@ -65,6 +65,7 @@ export default function WeatherPanel() {
     fetchWeather({
       latitude: place.latitude,
       longitude: place.longitude,
+      apiKey: openMeteoConfig.apiKey,
       signal: controller.signal,
     })
       .then((data) => {

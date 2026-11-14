@@ -27,12 +27,17 @@ fonts; the page lives in `src/pages/IpadDashboardPage.jsx`, panels in
 | Integration | What it needs | Where it lives |
 | --- | --- | --- |
 | Google Calendar | OAuth **client ID** (public identifier, not a secret) | `VITE_GOOGLE_CLIENT_ID`, or the fallback in `src/lib/dashboardConfig.js` |
-| Open-Meteo | Nothing — no key, no registration | n/a |
+| Open-Meteo | Nothing — the free API is keyless | optional `VITE_OPEN_METEO_APIKEY` (git-ignored) for a paid plan |
 
 No client secret, API key or private token is ever shipped to the browser. Google
 Calendar uses the Google Identity Services token flow with the read-only scope
 `calendar.readonly`; the access token stays in `sessionStorage` for the tab session only.
 Open-Meteo is a public, CORS-enabled API called directly from the page.
+
+If you hold a **commercial** Open-Meteo subscription, set `VITE_OPEN_METEO_APIKEY` in a
+git-ignored `.env.local`; the client then targets `customer-api.open-meteo.com`. That key
+is compiled into the public bundle, so treat it as a quota-limited identifier, not a
+secret, or move the request behind a proxy before enabling it.
 
 ### Google project setup
 
@@ -69,4 +74,4 @@ is publicly served (`https://tomhihihiltoners.github.io` redirects to it).
 
 The weather panel asks for the browser location once. If the prompt is denied or times
 out it falls back to `VITE_WEATHER_CITY` / `VITE_WEATHER_LAT` / `VITE_WEATHER_LON`
-(Moscow by default); the target button in the panel re-requests the location.
+(Perm by default); the target button in the panel re-requests the location.
