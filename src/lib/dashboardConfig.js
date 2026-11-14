@@ -2,11 +2,6 @@ const env = import.meta.env;
 
 const readString = (value) => (typeof value === 'string' ? value.trim() : '');
 
-const readNumber = (value, fallback) => {
-  const parsed = Number.parseFloat(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-};
-
 /**
  * Google OAuth client IDs are public identifiers, not secrets: Google ships them
  * inside every browser-side flow and they only grant access after the account
@@ -27,10 +22,14 @@ export const googleCalendarConfig = {
   calendarId: readString(env.VITE_GOOGLE_CALENDAR_ID) || 'primary',
 };
 
-export const defaultLocation = {
-  label: readString(env.VITE_WEATHER_CITY) || 'Пермь',
-  latitude: readNumber(env.VITE_WEATHER_LAT, 58.0105),
-  longitude: readNumber(env.VITE_WEATHER_LON, 56.2502),
+/**
+ * Fixed dashboard location. The weather widget always shows Chelyabinsk:
+ * geolocation is never requested and the city is not user-selectable.
+ */
+export const weatherLocation = {
+  label: 'Челябинск',
+  latitude: 55.1644,
+  longitude: 61.4368,
 };
 
 /**

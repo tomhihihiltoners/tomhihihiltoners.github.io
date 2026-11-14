@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import WeatherGlyph from './WeatherGlyph';
-import { defaultLocation, openMeteoConfig } from '../../lib/dashboardConfig';
+import { openMeteoConfig, weatherLocation } from '../../lib/dashboardConfig';
 import { fetchWeather } from '../../lib/openMeteo';
 
 const weekdayFormatter = new Intl.DateTimeFormat('ru-RU', { weekday: 'short' });
@@ -13,44 +13,17 @@ const timeFormatter = new Intl.DateTimeFormat('ru-RU', {
 
 const REFRESH_MS = 10 * 60 * 1000;
 
-function requestBrowserLocation() {
-  return new Promise((resolve) => {
-    if (typeof navigator === 'undefined' || !navigator.geolocation) {
-      resolve(null);
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (position) =>
-        resolve({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        }),
-      () => resolve(null),
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 10 * 60 * 1000 },
-    );
-  });
-}
-
 const formatTemp = (value) => (value === null ? '—' : `${Math.round(value)}°`);
 const formatValue = (value, unit) => (value === null ? '—' : `${value}${unit}`);
 
+/** Open-Meteo returns local ISO strings such as "2026-11-14T08:24". */
+const clockTime = (iso) => (typeof iso === 'string' && iso.length >= 16 ? iso.slice(11, 16) : null);
+
 export default function WeatherPanel() {
-  const [place, setPlace] = useState(() => ({ ...defaultLocation, source: 'default' }));
   const [weather, setWeather] = useState(null);
   const [status, setStatus] = useState('loading');
   const [error, setError] = useState('');
   const [tick, setTick] = useState(0);
-
-  useEffect(() => {
-    let cancelled = false;
-    requestBrowserLocation().then((coords) => {
-      if (cancelled || !coords) return;
-      setPlace({ label: 'Моё местоположение', ...coords, source: 'geo' });
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   useEffect(() => {
     const id = window.setInterval(() => setTick((value) => value + 1), REFRESH_MS);
@@ -63,8 +36,8 @@ export default function WeatherPanel() {
     setError('');
 
     fetchWeather({
-      latitude: place.latitude,
-      longitude: place.longitude,
+      latitude: weatherLocation.latitude,
+      longitude: weatherLocation.longitude,
       apiKey: openMeteoConfig.apiKey,
       signal: controller.signal,
     })
@@ -79,34 +52,18 @@ export default function WeatherPanel() {
       });
 
     return () => controller.abort();
-  }, [place, tick]);
-
-  const locate = useCallback(async () => {
-    const coords = await requestBrowserLocation();
-    if (!coords) {
-      setError('Доступ к местоположению не получен — показываю погоду по умолчанию.');
-      setPlace((value) => (value.source === 'default' ? { ...defaultLocation } : value));
-      return;
-    }
-    setPlace({ label: 'Моё местоположение', ...coords, source: 'geo' });
-  }, []);
+  }, [tick]);
 
   const current = weather?.current;
+  const today = weather?.daily?.[0];
+  const sunrise = clockTime(today?.sunrise);
+  const sunset = clockTime(today?.sunset);
 
   return (
-    <section className="panel panel--weather" aria-label="Погода">
+    <section className="panel panel--weather" aria-label="Погода в Челябинске">
       <header className="panel__head">
         <h2 className="panel__title">Погода</h2>
         <div className="cal-nav">
-          <button
-            type="button"
-            className="cal-nav__button"
-            onClick={locate}
-            aria-label="Использовать моё местоположение"
-            title="Использовать моё местоположение"
-          >
-            ⌖
-          </button>
           <button
             type="button"
             className="cal-nav__button"
@@ -127,17 +84,15 @@ export default function WeatherPanel() {
         {current ? (
           <>
             <div className="weather__now">
-              <WeatherGlyph kind={current.kind} isDay={current.isDay} size={56} />
+              <WeatherGlyph kind={current.kind} isDay={current.isDay} size={64} />
               <div>
                 <p className="weather__temp">{formatTemp(current.temperature)}</p>
                 <p className="weather__condition">{current.label}</p>
+                <p className="weather__place">
+                  {weatherLocation.label} · ощущается {formatTemp(current.apparent)}
+                </p>
               </div>
             </div>
-
-            <p className="weather__place">
-              {place.label}
-              {current.apparent !== null ? ` · ощущается ${formatTemp(current.apparent)}` : ''}
-            </p>
 
             <div className="weather__metrics">
               <div className="metric">
@@ -161,7 +116,7 @@ export default function WeatherPanel() {
             </div>
 
             <div className="forecast">
-              <p className="cal-section-label">Прогноз</p>
+              <p className="cal-section-label">Прогноз на 7 дней</p>
               <div className="forecast__row">
                 {weather.daily.map((day, index) => (
                   <div className="forecast__day" key={day.date.toISOString()}>
@@ -184,7 +139,11 @@ export default function WeatherPanel() {
 
             <p className="weather__footer">
               <span>
-                обновлено {timeFormatter.format(weather.observedAt)} · {dayFormatter.format(weather.observedAt)}
+                {sunrise ? `восход ${sunrise} · закат ${sunset}` : 'солнце: нет данных'}
+              </span>
+              <span>
+                обновлено {timeFormatter.format(weather.observedAt)} ·{' '}
+                {dayFormatter.format(weather.observedAt)}
               </span>
               <a href="https://open-meteo.com/" target="_blank" rel="noreferrer noopener">
                 Open-Meteo

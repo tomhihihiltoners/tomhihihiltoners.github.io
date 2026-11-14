@@ -70,8 +70,16 @@ deep link `/pageforipad` resolves on GitHub Pages, which serves static files onl
 `public/CNAME` pins the custom domain `dmitriicreativit.space`, which is where the site
 is publicly served (`https://tomhihihiltoners.github.io` redirects to it).
 
-### Geolocation
+### Location
 
-The weather panel asks for the browser location once. If the prompt is denied or times
-out it falls back to `VITE_WEATHER_CITY` / `VITE_WEATHER_LAT` / `VITE_WEATHER_LON`
-(Perm by default); the target button in the panel re-requests the location.
+The dashboard always shows **Chelyabinsk, Russia** (`55.1644, 61.4368`), fixed in
+`src/lib/dashboardConfig.js`. It never requests browser geolocation and the city is not
+user-selectable, so the widget cannot silently drift to another location.
+
+### Layout
+
+Tuned for landscape iPad: the weather panel is the primary surface, filling the full
+height of the wide right column, while the clock (a compact single row) and the calendar
+stack down a narrow left rail. Portrait and narrow screens collapse to one column with
+the order clock → weather → calendar, and the 7-day forecast becomes a swipeable strip
+below 620px.

@@ -114,7 +114,7 @@ export default function CalendarPanel() {
 
   const upcoming = useMemo(() => {
     const now = Date.now();
-    return events.filter((event) => event.end.getTime() >= now).slice(0, 3);
+    return events.filter((event) => event.end.getTime() >= now).slice(0, 2);
   }, [events]);
 
   const connect = useCallback(async () => {
