@@ -1,25 +1,27 @@
 const timer = document.getElementById("timer");
 const title = document.getElementById("event-title");
-const banner = document.getElementById("banner");
+const background = document.getElementById("background");
 
 let targetDate;
 
 async function init() {
     try {
         const response = await fetch("./time.json");
-        if (!response.ok) throw new Error("Не удалось загрузить time.json");
+        if (!response.ok) throw new Error("Ошибка загрузки JSON");
 
         const config = await response.json();
 
         title.textContent = config.title;
 
         if (config.banner) {
-            banner.src = config.banner;
-            banner.hidden = false;
+            const img = new Image();
 
-            banner.onerror = () => {
-                banner.hidden = true;
+            img.onload = () => {
+                background.style.backgroundImage =
+                    `url("${config.banner}")`;
             };
+
+            img.src = config.banner;
         }
 
         targetDate = new Date(config.date + "+05:00");
@@ -38,7 +40,7 @@ async function init() {
 }
 
 function updateTimer() {
-    let diff = Math.max(0, targetDate.getTime() - Date.now());
+    let diff = Math.max(0, targetDate - Date.now());
 
     const days = Math.floor(diff / 86400000);
     diff %= 86400000;

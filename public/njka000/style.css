@@ -13,36 +13,45 @@ body {
     background: #000;
     color: #fff;
     min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
     font-family: "Custom", sans-serif;
 }
 
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+
+    background-color: #000;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.35);
+}
+
 .timer-container {
-    text-align: center;
-    padding: 30px;
+    min-height: 100vh;
     width: 100%;
-}
-
-.banner {
-    display: block;
-    width: min(100%, 1200px);
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    margin: 0 auto 35px;
-}
-
-.banner[hidden] {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
 }
 
 .event-title {
     font-size: clamp(16px, 3vw, 28px);
     letter-spacing: 0.15em;
     margin-bottom: 25px;
-    color: #aaa;
     text-transform: uppercase;
+    color: #fff;
 }
 
 .timer {
@@ -51,14 +60,5 @@ body {
     letter-spacing: 0.03em;
     white-space: nowrap;
     line-height: 1;
-}
-
-@media (max-width: 600px) {
-    .timer-container {
-        padding: 15px;
-    }
-
-    .banner {
-        margin-bottom: 25px;
-    }
+    color: #fff;
 }
