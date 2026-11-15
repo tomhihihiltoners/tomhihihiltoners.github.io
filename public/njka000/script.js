@@ -6,13 +6,21 @@ let targetDate;
 
 async function init() {
     try {
-        const response = await fetch("./time.json");
-        if (!response.ok) throw new Error("Ошибка загрузки JSON");
+        const response = await fetch("./time.json?t=" + Date.now());
+
+        if (!response.ok) {
+            throw new Error(`time.json: HTTP ${response.status}`);
+        }
 
         const config = await response.json();
 
+        if (!config.title || !config.date) {
+            throw new Error("В time.json отсутствует title или date");
+        }
+
         title.textContent = config.title;
 
+        // Фоновое изображение
         if (config.banner) {
             const img = new Image();
 
@@ -21,13 +29,24 @@ async function init() {
                     `url("${config.banner}")`;
             };
 
+            img.onerror = () => {
+                console.error("Не удалось загрузить баннер");
+            };
+
             img.src = config.banner;
         }
 
-        targetDate = new Date(config.date + "+05:00");
+        // Екатеринбург / Пермь — UTC+5
+        let dateString = config.date;
+
+        if (!/(Z|[+-]\d{2}:\d{2})$/i.test(dateString)) {
+            dateString += "+05:00";
+        }
+
+        targetDate = new Date(dateString);
 
         if (isNaN(targetDate.getTime())) {
-            throw new Error("Некорректная дата");
+            throw new Error("Неверный формат даты: " + config.date);
         }
 
         updateTimer();
@@ -35,12 +54,12 @@ async function init() {
 
     } catch (error) {
         title.textContent = "ОШИБКА ЗАГРУЗКИ";
-        console.error(error);
+        console.error("TIMER ERROR:", error);
     }
 }
 
 function updateTimer() {
-    let diff = Math.max(0, targetDate - Date.now());
+    let diff = Math.max(0, targetDate.getTime() - Date.now());
 
     const days = Math.floor(diff / 86400000);
     diff %= 86400000;
