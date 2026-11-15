@@ -1,0 +1,43 @@
+@font-face {
+    font-family: "Custom";
+    src: url("./fonts/custom-font.ttf") format("truetype");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000002;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Custom", sans-serif;
+}
+
+.timer-container {
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.event-title {
+    font-size: clamp(16px, 3vw, 28px);
+    letter-spacing: 0.15em;
+    margin-bottom: 25px;
+    color: #aaa;
+    text-transform: uppercase;
+}
+
+.timer {
+    font-size: clamp(38px, 10vw, 130px);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    font-weight: normal;
+    line-height: 1;
+}
