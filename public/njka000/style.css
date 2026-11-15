@@ -20,7 +20,7 @@ body {
 .background {
     position: fixed;
     inset: 0;
-    z-index: -2;
+    z-index: 0;
 
     background-color: #000;
     background-position: center;
@@ -31,11 +31,13 @@ body {
 .overlay {
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 1;
     background: rgba(0, 0, 0, 0.35);
 }
 
 .timer-container {
+    position: relative;
+    z-index: 2;
     min-height: 100vh;
     width: 100%;
     display: flex;
