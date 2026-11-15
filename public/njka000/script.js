@@ -25,12 +25,7 @@ async function init() {
             const img = new Image();
 
             img.onload = () => {
-                background.style.backgroundImage =
-                    `url("${config.banner}")`;
-            };
-
-            img.onerror = () => {
-                console.error("Не удалось загрузить баннер");
+                background.style.backgroundImage = `url("${config.banner}")`;
             };
 
             img.src = config.banner;
