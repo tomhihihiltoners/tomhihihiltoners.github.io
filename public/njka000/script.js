@@ -1,20 +1,32 @@
 const timer = document.getElementById("timer");
 const title = document.getElementById("event-title");
+const banner = document.getElementById("banner");
 
 let targetDate;
 
 async function init() {
     try {
         const response = await fetch("./time.json");
+        if (!response.ok) throw new Error("Не удалось загрузить time.json");
+
         const config = await response.json();
 
         title.textContent = config.title;
 
-        // Время события в часовом поясе Екатеринбурга
-        const dateString = config.date;
-        targetDate = new Date(
-            new Date(dateString + "+05:00").getTime()
-        );
+        if (config.banner) {
+            banner.src = config.banner;
+            banner.hidden = false;
+
+            banner.onerror = () => {
+                banner.hidden = true;
+            };
+        }
+
+        targetDate = new Date(config.date + "+05:00");
+
+        if (isNaN(targetDate.getTime())) {
+            throw new Error("Некорректная дата");
+        }
 
         updateTimer();
         setInterval(updateTimer, 1000);
@@ -26,8 +38,7 @@ async function init() {
 }
 
 function updateTimer() {
-    const now = Date.now();
-    let diff = Math.max(0, targetDate - now);
+    let diff = Math.max(0, targetDate.getTime() - Date.now());
 
     const days = Math.floor(diff / 86400000);
     diff %= 86400000;
@@ -42,9 +53,8 @@ function updateTimer() {
 
     const format = n => String(n).padStart(2, "0");
 
-    timer.innerHTML = `
-        <span>${format(days)}</span>:<span>${format(hours)}</span>:<span>${format(minutes)}</span>:<span>${format(seconds)}</span>
-    `;
+    timer.textContent =
+        `${format(days)}:${format(hours)}:${format(minutes)}:${format(seconds)}`;
 }
 
 init();

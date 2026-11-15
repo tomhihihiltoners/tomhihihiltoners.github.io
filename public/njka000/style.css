@@ -10,7 +10,7 @@
 }
 
 body {
-    background: #000002;
+    background: #000;
     color: #fff;
     min-height: 100vh;
     display: flex;
@@ -21,8 +21,20 @@ body {
 
 .timer-container {
     text-align: center;
-    padding: 20px;
+    padding: 30px;
     width: 100%;
+}
+
+.banner {
+    display: block;
+    width: min(100%, 1200px);
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin: 0 auto 35px;
+}
+
+.banner[hidden] {
+    display: none;
 }
 
 .event-title {
@@ -38,6 +50,15 @@ body {
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.03em;
     white-space: nowrap;
-    font-weight: normal;
     line-height: 1;
+}
+
+@media (max-width: 600px) {
+    .timer-container {
+        padding: 15px;
+    }
+
+    .banner {
+        margin-bottom: 25px;
+    }
 }
