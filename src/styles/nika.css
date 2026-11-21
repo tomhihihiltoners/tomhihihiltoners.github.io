@@ -7,6 +7,8 @@
   overflow: hidden;
   display: grid;
   place-items: center;
+  /* Breathing room for the transparent subject, so the glow reads as a halo. */
+  padding: clamp(12px, 4vh, 48px) clamp(12px, 4vw, 48px);
   background-color: #000000;
 
   /* Fallback glow, used until the placeholder below is replaced. */
