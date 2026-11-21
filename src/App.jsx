@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/HomePage';
 import IpadDashboardPage from './pages/IpadDashboardPage';
+import NikaPage from './pages/NikaPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ProjectPage from './pages/ProjectPage';
 
@@ -10,6 +11,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/pageforipad" element={<IpadDashboardPage />} />
+      <Route path="/nika" element={<NikaPage />} />
       <Route path="/projects/:id" element={<ProjectPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

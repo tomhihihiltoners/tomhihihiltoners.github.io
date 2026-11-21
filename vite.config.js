@@ -5,9 +5,11 @@ import { defineConfig } from 'vite';
 
 /**
  * GitHub Pages only serves static files, so every client-side route needs a
- * real entry document. Mirror index.html to /pageforipad/index.html and to
+ * real entry document. Mirror index.html into each route directory and into
  * 404.html (the SPA fallback) once the bundle has been written.
  */
+const SPA_ROUTES = ['pageforipad', 'nika'];
+
 function githubPagesRoutes() {
   let outDir = 'dist';
 
@@ -22,9 +24,13 @@ function githubPagesRoutes() {
       if (!fs.existsSync(source)) return;
 
       const html = fs.readFileSync(source, 'utf8');
-      const nested = path.join(outDir, 'pageforipad');
-      fs.mkdirSync(nested, { recursive: true });
-      fs.writeFileSync(path.join(nested, 'index.html'), html);
+
+      for (const route of SPA_ROUTES) {
+        const nested = path.join(outDir, route);
+        fs.mkdirSync(nested, { recursive: true });
+        fs.writeFileSync(path.join(nested, 'index.html'), html);
+      }
+
       fs.writeFileSync(path.join(outDir, '404.html'), html);
       // Keep GitHub Pages from running Jekyll over the hashed asset names.
       fs.writeFileSync(path.join(outDir, '.nojekyll'), '');
