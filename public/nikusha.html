@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nika</title>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        overflow: hidden;
+        background: radial-gradient(
+            ellipse at center,
+            YOUR_BLUE_COLOR_HERE 0%,
+            #000000 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #slideshow {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #slideshow img {
+        position: absolute;
+        max-width: 100%;
+        max-height: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+    }
+
+    #slideshow img.active {
+        opacity: 1;
+    }
+
+    #music-control {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(0,0,0,0.5);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 13px;
+        opacity: 0.5;
+        transition: opacity 0.2s;
+    }
+
+    #music-control:hover {
+        opacity: 1;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="slideshow">
+    <img id="image1" class="active" alt="">
+    <img id="image2" alt="">
+</div>
+
+<audio id="music" loop>
+    <source src="https://file.garden/atDNoqj9Xr_pDZ7l/emot/song.mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-control">▶ Музыка</button>
+
+<script>
+    // ============================
+    // НАСТРОЙКИ
+    // ============================
+
+    const images = [
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_1.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_2.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_3.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_4.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_5.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_6.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_7.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_8.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_9.png",
+    "https://file.garden/atDNoqj9Xr_pDZ7l/emot/emotion_10.png"
+    ];
+
+    const INTERVAL = 500; // смена каждые 0.5 секунды
+
+    // ============================
+    // СЛАЙДШОУ
+    // ============================
+
+    const img1 = document.getElementById("image1");
+    const img2 = document.getElementById("image2");
+
+    let currentIndex = 0;
+    let showingFirst = true;
+
+    // Предзагрузка изображений
+    images.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
+    img1.src = images[0];
+
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % images.length;
+
+        const currentImg = showingFirst ? img1 : img2;
+        const nextImg = showingFirst ? img2 : img1;
+
+        nextImg.src = images[currentIndex];
+
+        nextImg.onload = () => {
+            nextImg.classList.add("active");
+            currentImg.classList.remove("active");
+            showingFirst = !showingFirst;
+        };
+    }, INTERVAL);
+
+    // ============================
+    // МУЗЫКА
+    // ============================
+
+    const music = document.getElementById("music");
+    const button = document.getElementById("music-control");
+
+    async function toggleMusic() {
+        if (music.paused) {
+            try {
+                await music.play();
+                button.textContent = "❚❚ Музыка";
+            } catch (error) {
+                console.error("Не удалось запустить музыку:", error);
+            }
+        } else {
+            music.pause();
+            button.textContent = "▶ Музыка";
+        }
+    }
+
+    button.addEventListener("click", toggleMusic);
+
+    // Попытка автоматического воспроизведения
+    music.play().then(() => {
+        button.textContent = "❚❚ Музыка";
+    }).catch(() => {
+        button.textContent = "▶ Музыка";
+    });
+</script>
+
+</body>
+</html>
